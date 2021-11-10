@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" lang="pt">
+    <title>Not Design</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
+
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #FFF;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        #main {
+            width: 80vw;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #content {
+            display: flex;
+        }
+
+        #divDesign {
+            display: flex;
+            position: relative;
+            top: 30vh;
+            font-size: 4.5rem;
+        }
+
+        .designLetter {
+            padding: 0 1vw;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+        }
+
+        .designContentLetter {
+            font-size: 2rem;
+            align-self: center;
+        }
+
+        #divImage {
+            position: absolute;
+            top: 17vh;
+            left: 20vw;
+            z-index: -100;
+            height: 30vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div id="divImage"></div>
+        <div id="content">
+            <div id="divDesign">
+                <div id="divD" class="designLetter">D</div>
+                <div id="divE" class="designLetter">E</div>
+                <div id="divS" class="designLetter">S</div>
+                <div id="divI" class="designLetter">I</div>
+                <div id="divG" class="designLetter">G</div>
+                <div id="divN" class="designLetter">N</div>
+            </div>
+        </div>
+        <div id="instructions">
+            pressione >
+        </div>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    let step = 0,
+        designContent = {
+            d: "ESALINHADO",
+            e: "XAGERADO",
+            s: "UPERFICIAL",
+            i: "NEFICIENTE",
+            g: "ENÉRICO",
+            n: "OT DESIGN"
+        },
+        color = {
+            accent: '#EB5757',
+            darkText: '#242424',
+            greyText: '',
+            main: '#A4C8FF',
+        },
+        arrowLeftKeyCode = 37,
+        arrowRightkeyCode = 39,
+        waitForStepToFinish = false
+
+    let imageContent = {
+        d: `<div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <svg width="147" height="32" viewBox="0 0 147 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="147" height="32" fill="${color.main}"/>
+                </svg>
+
+                <svg width="147" height="32" viewBox="0 0 147 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="147" height="32" fill="${color.main}"/>
+                </svg>
+
+                <svg width="147" height="32" viewBox="0 0 147 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="147" height="32" fill="${color.main}"/>
+                </svg>
+
+                <svg width="147" height="32" viewBox="0 0 147 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="147" height="32" fill="${color.main}"/>
+                </svg>
+            </div>`,
+        e: `<div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <svg width="147" height="32" viewBox="0 0 147 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="147" height="32" fill="${color.main}"/>
+                </svg>
+            </div>`,
+        s: `<div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <svg width="128" height="129" viewBox="0 0 128 129" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="29" width="100" height="100" fill="${color.main}" fill-opacity="0.8"/>
+                    <path d="M28.5 0L0 29H100L128 0H28.5Z" fill="${color.main}" fill-opacity="0.9"/>
+                    <path d="M128 101L100 129V29L128 0V101Z" fill="${color.main}" fill-opacity="0.7"/>
+                </svg>
+            </div>`,
+        i: `<div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <svg width="110" height="100" viewBox="0 0 110 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="20" y1="12" x2="20" y2="100" stroke="${color.main}" stroke-width="12"/>
+                    <line x1="91" y1="12" x2="91" y2="100" stroke="${color.main}" stroke-width="12"/>
+                    <line y1="6" x2="110" y2="6" stroke="${color.main}" stroke-width="12"/>
+                </svg>
+            </div>`,
+        n: ""
+    }
+
+    $(document).ready(function () {
+        $("body").keydown(function (e) {
+            if (e.keyCode == arrowRightkeyCode && !waitForStepToFinish) {
+                step += step < 6 ? 1 : -6
+                doStep()
+            }
+        });
+    })
+
+    function doStep() {
+        waitForStepToFinish = true;
+
+        switch (step) {
+            case 0:
+                goBackToStart()
+                break;
+            case 1:
+                $('#divDesign').animate({ top: "-=25vh" }, 500)
+                layDownLetters(designContent.d, '#divD')
+                showImage(imageContent.d)
+                break;
+            case 2:
+                layDownLetters(designContent.e, '#divE')
+                showImage(imageContent.e)
+                break;
+            case 3:
+                layDownLetters(designContent.s, '#divS')
+                showImage(imageContent.s)
+                break;
+            case 4:
+                layDownLetters(designContent.i, '#divI')
+                showImage(imageContent.i)
+                break;
+            case 5:
+                layDownLetters(designContent.g, '#divG')
+                showImage(imageContent.g)
+                break;
+            case 6:
+                layDownLetters(designContent.n, '#divN')
+                showImage(imageContent.n)
+                break;
+        }
+    }
+
+    function layDownLetters(word, id) {
+        let t = 500,
+            length = word.length,
+            c = id == '#divN' ? color.accent : color.main,
+            textColor = id == '#divN' ? color.main : color.darkText
+
+
+        word.split('').forEach(function (letter, index) {
+            setTimeout(function () {
+                $('.designLetter').css('color', textColor)
+
+                let el = $(letter == ' ' ? '<div class="designContentLetter"><br></div>' : `<div class="designContentLetter">${letter}</div>`).hide()
+                $(id).css('color', c).append(el)
+                el.show('normal')
+
+                if (index == length - 1) waitForStepToFinish = false;
+            }, t);
+            t += 50
+        })
+    }
+
+    function showImage(image) {
+        $('#divImage').empty().append(image).hide().show('slow')
+    }
+
+    function goBackToStart() {
+        let t = 500,
+            elements = shuffle($('div .designContentLetter').get())
+
+        elements.forEach(function (el, index) {
+            setTimeout(function () {
+                $('.designLetter').css('color', color.darkText)
+                $(el).fadeOut('fast').remove()
+
+                if (index == elements.length - 1) {
+                    $('#divDesign').animate({ top: "+=25vh" }, 500)
+                    waitForStepToFinish = false;
+                }
+            }, t);
+            t += 50
+        })
+    }
+
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (currentIndex != 0) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+
+</script>
+
+</html>
